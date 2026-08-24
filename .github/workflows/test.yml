@@ -15,7 +15,6 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v7.1.4
 
-
       - name: Run script
         env:
           ZOTERO_ID: ${{ secrets.ZOTERO_ID }}
@@ -28,7 +27,9 @@ jobs:
           CUSTOM_CONFIG: ${{ vars.CUSTOM_CONFIG }}
         run: |
           export DEBUG=true
-          printf "%b\n" "$CUSTOM_CONFIG" > config/custom.yaml
+          if [[ -n "$CUSTOM_CONFIG" ]]; then
+            printf "%b\n" "$CUSTOM_CONFIG" > config/custom.yaml
+          fi
           echo "Use custom config: "
           cat config/custom.yaml
           uv run src/zotero_arxiv_daily/main.py
